@@ -1,14 +1,16 @@
 package api
 
 import (
-	"encoding/json"
-	"fmt"
+	"io"
 	"net/http"
 	"seisan/internal/demo"
+	"strconv"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
-	header, _ := json.Marshal(r.Header)
-	fmt.Fprintf(w, `{"a": "%s","hello":"%s", "header": "%s"}`, demo.Demo, demo.S, string(header))
+	values := r.URL.Query()
+	d := values.Get("d")
+	v, _ := strconv.Atoi(d)
+	io.WriteString(w, demo.GetLabel(v))
 }

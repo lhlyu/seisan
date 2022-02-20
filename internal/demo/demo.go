@@ -1,23 +1,15 @@
 package demo
 
 import (
-	"io/ioutil"
+	"log"
+	dd "seisan/internal/dict"
 )
 
-const Demo = "demo"
-
-var S string
-
-const a = 1
-
-func init() {
-
-	b, err := ioutil.ReadFile("./demo.txt")
-	if err != nil {
-		b, err = ioutil.ReadFile("./internal/demo/demo.txt")
-		if err != nil {
-			S = err.Error()
-		}
+func GetLabel(index int) string {
+	log.Println("--->", index)
+	v, ok := dd.D[index]
+	if ok {
+		return v
 	}
-	S = string(b)
+	return "没有找到"
 }
