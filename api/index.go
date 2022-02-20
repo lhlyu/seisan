@@ -2,8 +2,8 @@ package handler
 
 import (
 	"fmt"
-	"github.com/lhlyu/seisan/internal/core"
 	"net/http"
+	"seisan/internal/core"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {

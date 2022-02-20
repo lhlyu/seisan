@@ -1,3 +1,3 @@
-module github.com/lhlyu/seisan
+module seisan
 
 go 1.17
