@@ -2,7 +2,6 @@ package api
 
 import (
 	"net/http"
-	"seisan/internal/core"
 	"seisan/internal/model"
 )
 
@@ -18,12 +17,15 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		resp.Write(w)
 		return
 	}
-	data, err := core.GetResult(req.Query)
-	if err != nil {
-		resp := model.NewErrorResp(err.Error())
-		resp.Write(w)
-		return
-	}
-	resp := model.NewResp(data)
+	//data, err := core.GetResult(req.Query)
+	//if err != nil {
+	//	resp := model.NewErrorResp(err.Error())
+	//	resp.Write(w)
+	//	return
+	//}
+	//resp := model.NewResp(data)
+	//resp.Write(w)
+	resp := model.NewErrorResp("无")
 	resp.Write(w)
+	return
 }
