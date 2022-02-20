@@ -1,7 +1,7 @@
 package api
 
 import (
-	"fmt"
+	"io"
 	"io/fs"
 	"net/http"
 	"path/filepath"
@@ -15,5 +15,5 @@ func HandlerVersion(w http.ResponseWriter, r *http.Request) {
 		return nil
 	})
 	w.Header().Set("content-type", "application/json")
-	fmt.Fprintf(w, `{"version":"%s"}`, strings.Join(ss, ","))
+	io.WriteString(w, strings.Join(ss, "\n"))
 }
