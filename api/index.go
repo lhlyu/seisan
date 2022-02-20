@@ -3,7 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"seisan/internal/core"
+	"seisan/api/internal/core"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
