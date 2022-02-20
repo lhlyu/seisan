@@ -1,16 +1,29 @@
 package api
 
 import (
-	"io"
 	"net/http"
-	"seisan/internal/demo"
-	"strconv"
+	"seisan/internal/core"
+	"seisan/internal/model"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
-	values := r.URL.Query()
-	d := values.Get("d")
-	v, _ := strconv.Atoi(d)
-	io.WriteString(w, demo.GetLabel(v))
+	req := model.NewReq(r)
+	if !req.Check() {
+		resp := model.NewErrorResp("签名校验失败")
+		resp.Write(w)
+		return
+	}
+	if req.Query.Kind == "" {
+		resp := model.NewErrorResp("参数不合法")
+		resp.Write(w)
+		return
+	}
+	data, err := core.GetResult(req.Query)
+	if err != nil {
+		resp := model.NewErrorResp(err.Error())
+		resp.Write(w)
+		return
+	}
+	resp := model.NewResp(data)
+	resp.Write(w)
 }
