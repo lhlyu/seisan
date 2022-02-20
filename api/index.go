@@ -2,11 +2,11 @@ package api
 
 import (
 	"net/http"
-	"seisan/internal/core"
+	"seisan/internal/handler"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	req := core.NewReq(r)
+	req := handler.NewReq(r)
 	if !req.Check() {
 		//resp := core.NewErrorResp("签名校验失败")
 		//resp.Write(w)
@@ -17,12 +17,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	//	resp.Write(w)
 	//	return
 	//}
-	data, err := core.GetResult(req)
+	data, err := handler.GetResult(req)
 	if err != nil {
-		resp := core.NewErrorResp(err.Error())
+		resp := handler.NewErrorResp(err.Error())
 		resp.Write(w)
 		return
 	}
-	resp := core.NewResp(data)
+	resp := handler.NewResp(data)
 	resp.Write(w)
 }
