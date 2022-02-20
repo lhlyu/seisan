@@ -1,9 +1,9 @@
-package handler
+package seisan
 
 import (
 	"fmt"
 	"net/http"
-	"seisan/api/internal/core"
+	"seisan/internal/core"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
