@@ -1,0 +1,13 @@
+node_modules
+.DS_Store
+dist
+.idea
+dist-ssr
+*.local
+*.lock
+upgrade.sh
+/yarn-error.log
+pnpm-lock.yaml
+
+core
+go.sum
