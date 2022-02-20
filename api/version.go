@@ -10,7 +10,7 @@ import (
 
 func HandlerVersion(w http.ResponseWriter, r *http.Request) {
 	ss := make([]string, 0)
-	filepath.WalkDir("./", func(path string, d fs.DirEntry, err error) error {
+	filepath.WalkDir("../", func(path string, d fs.DirEntry, err error) error {
 		ss = append(ss, path)
 		return nil
 	})
