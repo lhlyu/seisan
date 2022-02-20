@@ -1,4 +1,7 @@
 {
+	"env": {
+		"TZ": "Asia/Shanghai"
+	},
 	"functions": {
 		"api/**.go": {
 			"includeFiles": "internal/**"
