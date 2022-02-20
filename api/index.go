@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"io"
+	"fmt"
+	"github.com/lhlyu/seisan/internal/core"
 	"net/http"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
-	io.WriteString(w, `{"hello":"yu"}`)
+	fmt.Fprintf(w, `{"hello":"%s"}`, core.Version)
 }
