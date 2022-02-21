@@ -41,3 +41,10 @@ func (r *Resp) Write(w http.ResponseWriter) {
 	b, _ := json.Marshal(r)
 	io.WriteString(w, string(b))
 }
+
+type Item struct {
+	Prefix string `json:"prefix"`
+	Suffix string `json:"suffix"`
+	Gender int    `json:"gender,omitempty"`
+	Score  int    `json:"score"`
+}

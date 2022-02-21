@@ -8,15 +8,15 @@ import (
 func Handler(w http.ResponseWriter, r *http.Request) {
 	req := handler.NewReq(r)
 	if !req.Check() {
-		//resp := core.NewErrorResp("签名校验失败")
-		//resp.Write(w)
-		//return
+		resp := handler.NewErrorResp("签名校验失败")
+		resp.Write(w)
+		return
 	}
-	//if req.Query.Kind == "" {
-	//	resp := core.NewErrorResp("参数不合法")
-	//	resp.Write(w)
-	//	return
-	//}
+	if req.Query.Kind == "" {
+		resp := handler.NewErrorResp("参数不合法")
+		resp.Write(w)
+		return
+	}
 	data, err := handler.GetResult(req)
 	if err != nil {
 		resp := handler.NewErrorResp(err.Error())

@@ -20,7 +20,7 @@ const item = ref('')
 
 const click = () => {
     const set = new Set()
-    txt.value.split('\n').map((v:string) => {
+    txt.value.split('').map((v:string) => {
         const val = v.trim()
         if (val.length) {
             set.add(val)
