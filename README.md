@@ -11,3 +11,7 @@
 - 生成地名
 
 ### [更多改动](./CHANGELOG.md)
+
+### 动机
+
+主要学习 vercel api, [Vercel 国内加速访问](https://while.work/vercel)
