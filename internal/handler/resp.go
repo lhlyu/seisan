@@ -46,5 +46,4 @@ type Item struct {
 	Prefix string `json:"prefix"`
 	Suffix string `json:"suffix"`
 	Gender int    `json:"gender,omitempty"`
-	Score  int    `json:"score"`
 }

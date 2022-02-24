@@ -3,11 +3,9 @@ package handler
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"math/rand"
 	"seisan/internal/dict"
 	"seisan/internal/model"
-	"sort"
 	"strings"
 	"time"
 )
@@ -47,9 +45,6 @@ func GetResult(req *Req) (map[string]interface{}, error) {
 	if len(items) == 0 {
 		return nil, err_create_empty
 	}
-	sort.SliceStable(items, func(i, j int) bool {
-		return items[i].Score > items[j].Score
-	})
 	return map[string]interface{}{
 		"list": items,
 	}, nil
@@ -61,7 +56,6 @@ func GetChineseNames(query *model.Query) []*Item {
 	items := make([]*Item, 0)
 	rand.Seed(time.Now().UnixNano())
 	for i := 0; i < query.Number; i++ {
-		eles := make([][]string, 0)
 		prefix := query.Prefix
 		surname := query.Surname
 		if surname == 0 {
@@ -73,48 +67,40 @@ func GetChineseNames(query *model.Query) []*Item {
 		}
 		if prefix == "" {
 			if surname == 1 {
-				val := dict.Single[rand.Intn(dict.SingleLen)]
-				eles = append(eles, val)
-				prefix = val[0]
+				prefix = dict.Single[rand.Intn(dict.SingleLen)]
 			}
 			if surname == 2 {
-				val := dict.Double[rand.Intn(dict.DoubleLen)]
-				eles = append(eles, val)
-				prefix = val[0]
+				prefix = dict.Double[rand.Intn(dict.DoubleLen)]
 			}
 		}
 
-		buf := bytes.Buffer{}
-		for j := 0; j < query.NameLength; j++ {
-			suffix := query.Suffix
-			if suffix == "" {
+		suffix := query.Suffix
+		if suffix == "" {
+			buf := bytes.Buffer{}
+			for j := 0; j < query.NameLength; j++ {
 				if gender == 1 {
-					val := dict.Man[rand.Intn(dict.ManLen)]
-					eles = append(eles, val)
-					suffix = val[0]
+					suffix = dict.Man[rand.Intn(dict.ManLen)]
 				}
 
 				if gender == 2 {
-					val := dict.Woman[rand.Intn(dict.WomanLen)]
-					eles = append(eles, val)
-					suffix = val[0]
+					suffix = dict.Woman[rand.Intn(dict.WomanLen)]
 				}
+
+				buf.WriteString(suffix)
 			}
-			buf.WriteString(suffix)
+			suffix = buf.String()
 		}
-		name := buf.String()
+
+		name := prefix + suffix
+
 		// 去重
 		if _, has := distincter[name]; has {
 			continue
 		}
-		// 评分
-		score := getScore(gender, eles)
-
 		items = append(items, &Item{
 			Prefix: prefix,
-			Suffix: name,
+			Suffix: suffix,
 			Gender: gender,
-			Score:  score,
 		})
 
 		distincter[name] = struct{}{}
@@ -150,56 +136,4 @@ func GetTreasures(query *model.Query) []*Item {
 // 获取地名
 func GetPlaces(query *model.Query) []*Item {
 	return nil
-}
-
-// 打分
-func getScore(gender int, eles [][]string) int {
-	fmt.Println(eles)
-	if len(eles) == 0 {
-		return 0
-	}
-	var score int
-	// 声调
-	sd := make(map[string]struct{})
-	// 声母
-	sm := make(map[string]struct{})
-
-	for _, ele := range eles {
-		for i := 1; i < len(ele); i++ {
-			// 声调
-			if i%2 == 0 {
-				if _, ok := sd[ele[i]]; ok {
-					score--
-					continue
-				}
-				score++
-				sd[ele[i]] = struct{}{}
-				continue
-			}
-			if _, ok := sm[ele[i]]; ok {
-				score--
-				continue
-			}
-			score++
-			sm[ele[i]] = struct{}{}
-			continue
-		}
-	}
-	// 男平女仄结尾加分
-	lastWord := eles[len(eles)-1]
-	if gender == 1 {
-		if lastWord[2] == "1" || lastWord[2] == "2" {
-			score--
-		} else {
-			score++
-		}
-	}
-	if gender == 2 {
-		if lastWord[2] == "3" || lastWord[2] == "4" {
-			score--
-		} else {
-			score++
-		}
-	}
-	return score
 }

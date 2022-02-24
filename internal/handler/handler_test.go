@@ -3,7 +3,6 @@ package handler
 import (
 	"fmt"
 	"seisan/internal/model"
-	"sort"
 	"testing"
 )
 
@@ -17,10 +16,7 @@ func TestName(t *testing.T) {
 		Suffix:     "",
 		NameLength: 2,
 	})
-	sort.SliceStable(items, func(i, j int) bool {
-		return items[i].Score > items[j].Score
-	})
 	for _, item := range items {
-		fmt.Printf("%s %-5s | %2d | %2d\n", item.Prefix, item.Suffix, item.Gender, item.Score)
+		fmt.Printf("%s %-5s | %2d\n", item.Prefix, item.Suffix, item.Gender)
 	}
 }

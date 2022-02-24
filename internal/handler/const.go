@@ -1,3 +1,3 @@
 package handler
 
-const key = "Ok0D1qq7Qbks3Wni"
+const key = "49fTxhKn4gF4rCrL"
